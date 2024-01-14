@@ -14,4 +14,5 @@ slack
 terraform
 the_silver_searcher
 vault
+vim
 zsh
