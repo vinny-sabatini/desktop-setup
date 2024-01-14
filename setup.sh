@@ -1,7 +1,7 @@
 # Setup directories
 TECH_DIR=$HOME/tech
 PROJ_DIR=$HOME/projects
-mkdir -p $TECH_DIR
+mkdir -p $TECH_DIR/bin
 mkdir -p $PROJ_DIR
 
 # Check OS
