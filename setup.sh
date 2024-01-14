@@ -38,10 +38,6 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 chmod +x kubectl
 mv kubectl $TECH_DIR/bin
 
-# Install kubectx/ns
-kubectl krew install ctx
-kubectl krew install ns
-
 # Install krew
 (
   set -x; cd "$(mktemp -d)" &&
@@ -52,6 +48,10 @@ kubectl krew install ns
   tar zxvf "${KREW}.tar.gz" &&
   ./"${KREW}" install krew
 )
+
+# Install kubectx/ns
+kubectl krew install ctx
+kubectl krew install ns
 
 # Setup yum repos
 cp ./yum-repos/* /etc/yum.repos.d/
