@@ -6,6 +6,8 @@ PROJ_DIR=$HOME/projects
 mkdir -p $TECH_DIR/bin
 mkdir -p $PROJ_DIR
 
+PATH=$PATH:$TECH_DIR/bin:$HOME/.krew/bin
+
 # Check OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   echo "Setting up linux machine"
@@ -54,7 +56,7 @@ kubectl krew install ctx
 kubectl krew install ns
 
 # Setup yum repos
-cp ./yum-repos/* /etc/yum.repos.d/
+sudo cp ./yum-repos/* /etc/yum.repos.d/
 sudo dnf -y update
 sudo dnf -y install rpms.txt
 
