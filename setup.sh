@@ -57,6 +57,7 @@ kubectl krew install ns
 
 # Setup yum repos
 sudo cp ./yum-repos/* /etc/yum.repos.d/
+sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf -y update
 sudo dnf -y install $(cat rpms.txt)
 
