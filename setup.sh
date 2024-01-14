@@ -60,7 +60,7 @@ sudo dnf -y install rpms.txt
 pip install virtualenv
 
 # Add dotfiles
-cp -a ./dotfiles/* $HOME
+cp -r ./dotfiles/. $HOME
 
 # Setup oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
