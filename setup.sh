@@ -1,3 +1,5 @@
+set -euo pipefail
+
 # Setup directories
 TECH_DIR=$HOME/tech
 PROJ_DIR=$HOME/projects
