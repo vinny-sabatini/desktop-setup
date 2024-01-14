@@ -58,7 +58,7 @@ kubectl krew install ns
 # Setup yum repos
 sudo cp ./yum-repos/* /etc/yum.repos.d/
 sudo dnf -y update
-sudo dnf -y install rpms.txt
+sudo dnf -y install $(cat rpms.txt)
 
 # virtualenv install
 pip install virtualenv
