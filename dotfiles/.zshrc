@@ -159,6 +159,7 @@ alias docker=podman
 alias k=kubectl
 alias o=oc
 alias krew="kubectl krew"
+alias netshoot="kubectl run netshoot --image=nicolaka/netshoot -i --tty --rm"
 
 # PATH
 # The bottom of this list will be at the beginning of PATH
