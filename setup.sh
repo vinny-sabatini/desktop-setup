@@ -55,6 +55,9 @@ mv kubectl $TECH_DIR/bin
 kubectl krew install ctx
 kubectl krew install ns
 
+ln ~/.krew/bin/kubectl-ns $HOME/.krew/bin/kubens
+ln ~/.krew/bin/kubectl-ctx $HOME/.krew/bin/kubectx
+
 # Setup yum repos
 sudo cp ./yum-repos/* /etc/yum.repos.d/
 sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -70,3 +73,10 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 # Add dotfiles
 cp -r ./dotfiles/. $HOME
+
+# Fix kind "too many open files" issue
+# https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files
+sudo cat << EOF >> /etc/sysctl.conf
+fs.inotify.max_user_watches = 524288
+fs.inotify.max_user_instances = 512
+EOF
