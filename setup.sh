@@ -51,9 +51,20 @@ mv kubectl $TECH_DIR/bin
   ./"${KREW}" install krew
 )
 
-# Install kubectx/ns
+# Install krew kubectl plugins
 kubectl krew install ctx
 kubectl krew install ns
+kubectl krew install 
+kubectl krew install access-matrix
+kubectl krew install foreach
+kubectl krew install gke-policy
+kubectl krew install konfig
+kubectl krew install neat
+kubectl krew install oidc-login
+kubectl krew install sick-pods
+kubectl krew install sniff
+kubectl krew install view-secret
+kubectl krew install whoami
 
 ln ~/.krew/bin/kubectl-ns $HOME/.krew/bin/kubens
 ln ~/.krew/bin/kubectl-ctx $HOME/.krew/bin/kubectx
