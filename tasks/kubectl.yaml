@@ -1,0 +1,13 @@
+---
+- name: Check latest kubectl
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/stable.txt
+    return_content: true
+  register: kubectl_stable_release
+- ansible.builtin.set_fact:
+    kubectl_url: "https://dl.k8s.io/release/{{ kubectl_stable_release.content }}/bin/linux/{{ arm_or_amd }}/kubectl"
+- name: Download kubectl
+  ansible.builtin.get_url:
+    url: "{{ kubectl_url }}"
+    dest: "{{ tech_bin_dir }}/kubectl"
+    mode: '0755'

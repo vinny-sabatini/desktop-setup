@@ -1,0 +1,26 @@
+---
+- name: Setup Desktop
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - ansible.builtin.set_fact:
+        tech_bin_dir: "$HOME/tech/bin"
+    - ansible.builtin.set_fact:
+        arm_or_amd: "amd64"
+      when: ansible_facts['architecture'] == 'x86_64'
+    - ansible.builtin.set_fact:
+        arm_or_amd: "arm64"
+      when: ansible_facts['architecture'] == 'aarch64'
+
+    - name: Install pip requirements
+      ansible.builtin.pip:
+        name: "{{ item }}"
+      with_items:
+        - github3.py
+        - virtualenv
+
+    - ansible.builtin.include_tasks: "{{ item }}"
+      with_fileglob:
+        - tasks/*

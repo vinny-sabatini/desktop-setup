@@ -1,0 +1,17 @@
+---
+- name: Ensure GitHub3 Python Module
+  ansible.builtin.pip:
+    name: github3.py
+- name: Get latest release of argocd
+  community.general.github_release:
+    user: argoproj
+    repo: argo-cd
+    action: latest_release
+  register: argocd_latest_release
+- ansible.builtin.set_fact:
+    argocd_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_latest_release.tag }}/argocd-linux-{{ arm_or_amd }}
+- name: Download ArgoCD
+  ansible.builtin.get_url:
+    url: "{{ argocd_url }}"
+    dest: "{{ tech_bin_dir }}/argocd"
+    mode: '0755'

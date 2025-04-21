@@ -1,0 +1,17 @@
+---
+- name: Ensure GitHub3 Python Module
+  ansible.builtin.pip:
+    name: github3.py
+- name: Get latest release of yq
+  community.general.github_release:
+    user: mikefarah
+    repo: yq
+    action: latest_release
+  register: yq_latest_release
+- ansible.builtin.set_fact:
+    yq_url: https://github.com/mikefarah/yq/releases/download/{{ yq_latest_release.tag }}/yq_linux_{{ arm_or_amd }}
+- name: Download yq
+  ansible.builtin.get_url:
+    url: "{{ yq_url }}"
+    dest: "{{ tech_bin_dir }}/yq"
+    mode: '0755'

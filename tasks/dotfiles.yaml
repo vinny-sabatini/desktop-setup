@@ -1,0 +1,7 @@
+# ---
+# - ansible.builtin.copy:
+#     src: "{{ item }}"
+#     dest: $HOME/
+
+#   with_fileglob:
+#     - ../dotfiles/*

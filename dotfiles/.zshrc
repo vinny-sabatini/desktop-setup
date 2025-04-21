@@ -79,7 +79,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 
 plugins=(
-  ag
   gh
   git
   git-prompt
@@ -208,10 +207,12 @@ if which kubectl > /dev/null 2>&1; then
     complete -F __start_kubectl k
 
     # Setup kubectx
-    alias kctx='kubectx'
+    alias kctx='kubectl ctx'
+    alias kubectx=kctx
 
     # Setup kubens
-    alias kns='kubens'
+    alias kns='kubectl ns'
+    alias kubens=kns
 fi
 
 
@@ -250,6 +251,19 @@ fi
 # Enable gcloud complete
 if which gcloud > /dev/null 2>&1; then
     source /usr/lib64/google-cloud-sdk/completion.zsh.inc
+fi
+
+if which kind > /dev/null 2>&1; then
+    eval $(kind completion zsh)
+fi
+
+if which talosctl > /dev/null 2>&1; then
+    source <(talosctl completion zsh)
+fi
+
+if which argocd > /dev/null 2>&1; then
+    source <(argocd completion zsh)
+    compdef _argocd argocd
 fi
 
 complete -C $HOME/projects/go/bin/odo odo

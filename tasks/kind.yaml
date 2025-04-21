@@ -1,0 +1,8 @@
+---
+- ansible.builtin.set_fact:
+    kind_url: https://kind.sigs.k8s.io/dl/latest/kind-linux-{{ arm_or_amd }}
+- name: Download Kind
+  ansible.builtin.get_url:
+    url: "{{ kind_url }}"
+    dest: "{{ tech_bin_dir }}/kind"
+    mode: '0755'

@@ -1,0 +1,19 @@
+---
+- name: Ensure GitHub3 Python Module
+  ansible.builtin.pip:
+    name: github3.py
+- name: Get latest release of k9s
+  community.general.github_release:
+    user: derailed
+    repo: k9s
+    action: latest_release
+  register: k9s_latest_release
+- ansible.builtin.set_fact:
+    k9s_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_Linux_{{ arm_or_amd }}.tar.gz"
+- name: Download latest k9s
+  ansible.builtin.unarchive:
+    src: "{{ k9s_url }}"
+    dest: "{{ tech_bin_dir }}"
+    remote_src: true
+    include:
+      - k9s

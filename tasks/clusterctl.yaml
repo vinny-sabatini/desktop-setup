@@ -1,0 +1,17 @@
+---
+- name: Ensure GitHub3 Python Module
+  ansible.builtin.pip:
+    name: github3.py
+- name: Get latest release of clusterctl
+  community.general.github_release:
+    user: kubernetes-sigs
+    repo: cluster-api
+    action: latest_release
+  register: clusterctl_latest_release
+- ansible.builtin.set_fact:
+    clusterctl_url: https://github.com/kubernetes-sigs/cluster-api/releases/download/{{ clusterctl_latest_release.tag }}/clusterctl-linux-{{ arm_or_amd }}
+- name: Download clusterctl
+  ansible.builtin.get_url:
+    url: "{{ clusterctl_url }}"
+    dest: "{{ tech_bin_dir }}/clusterctl"
+    mode: '0755'
