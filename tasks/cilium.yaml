@@ -6,7 +6,7 @@
     action: latest_release
   register: cilium_latest_release
 - ansible.builtin.set_fact:
-    cilium_url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_latest_release.tag }}/cilium-linux-{{ arm_or_amd }}.tar.gz
+    cilium_url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_latest_release.tag }}/cilium-{{ operating_system }}-{{ arm_or_amd }}.tar.gz
 - name: Download cilium
   ansible.builtin.unarchive:
     src: "{{ cilium_url }}"

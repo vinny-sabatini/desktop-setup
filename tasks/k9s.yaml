@@ -6,7 +6,7 @@
     action: latest_release
   register: k9s_latest_release
 - ansible.builtin.set_fact:
-    k9s_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_Linux_{{ arm_or_amd }}.tar.gz"
+    k9s_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_{{ operating_system | capitalize }}_{{ arm_or_amd }}.tar.gz"
 - name: Download latest k9s
   ansible.builtin.unarchive:
     src: "{{ k9s_url }}"

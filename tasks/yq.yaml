@@ -6,7 +6,7 @@
     action: latest_release
   register: yq_latest_release
 - ansible.builtin.set_fact:
-    yq_url: https://github.com/mikefarah/yq/releases/download/{{ yq_latest_release.tag }}/yq_linux_{{ arm_or_amd }}
+    yq_url: https://github.com/mikefarah/yq/releases/download/{{ yq_latest_release.tag }}/yq_{{ operating_system }}_{{ arm_or_amd }}
 - name: Download yq
   ansible.builtin.get_url:
     url: "{{ yq_url }}"

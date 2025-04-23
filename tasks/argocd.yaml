@@ -6,7 +6,7 @@
     action: latest_release
   register: argocd_latest_release
 - ansible.builtin.set_fact:
-    argocd_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_latest_release.tag }}/argocd-linux-{{ arm_or_amd }}
+    argocd_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_latest_release.tag }}/argocd-{{ operating_system }}-{{ arm_or_amd }}
 - name: Download ArgoCD
   ansible.builtin.get_url:
     url: "{{ argocd_url }}"

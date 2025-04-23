@@ -1,7 +1,7 @@
 ---
 - ansible.builtin.set_fact:
     # TODO: Dynamically get kustomize version
-    kustomize_url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.6.0/kustomize_v5.6.0_linux_{{ arm_or_amd }}.tar.gz"
+    kustomize_url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.6.0/kustomize_v5.6.0_{{ operating_system }}_{{ arm_or_amd }}.tar.gz"
 - name: Download latest kustomize
   ansible.builtin.unarchive:
     src: "{{ kustomize_url }}"

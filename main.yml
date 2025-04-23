@@ -7,6 +7,7 @@
   tasks:
     - ansible.builtin.set_fact:
         tech_bin_dir: "$HOME/tech/bin"
+        operating_system: "{{ ansible_facts['system'] | lower }}"
     - ansible.builtin.set_fact:
         arm_or_amd: "amd64"
       when: ansible_facts['architecture'] == 'x86_64'

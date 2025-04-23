@@ -6,7 +6,7 @@
     action: latest_release
   register: talos_latest_release
 - ansible.builtin.set_fact:
-    talosctl_url: https://github.com/siderolabs/talos/releases/download/{{ talos_latest_release.tag }}/talosctl-linux-{{ arm_or_amd }}
+    talosctl_url: https://github.com/siderolabs/talos/releases/download/{{ talos_latest_release.tag }}/talosctl-{{ operating_system }}-{{ arm_or_amd }}
 - name: Download talosctl
   ansible.builtin.get_url:
     url: "{{ talosctl_url }}"
