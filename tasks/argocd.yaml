@@ -1,7 +1,4 @@
 ---
-- name: Ensure GitHub3 Python Module
-  ansible.builtin.pip:
-    name: github3.py
 - name: Get latest release of argocd
   community.general.github_release:
     user: argoproj

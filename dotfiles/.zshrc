@@ -261,6 +261,10 @@ if which talosctl > /dev/null 2>&1; then
     source <(talosctl completion zsh)
 fi
 
+if which cilium > /dev/null 2>&1; then
+    source <(cilium completion zsh)
+fi
+
 if which argocd > /dev/null 2>&1; then
     source <(argocd completion zsh)
     compdef _argocd argocd
