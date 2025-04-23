@@ -1,0 +1,18 @@
+---
+- name: Get latest release of crc
+  community.general.github_release:
+    user: crc-org
+    repo: crc
+    action: latest_release
+  register: crc_latest_release
+- ansible.builtin.set_fact:
+    crc_url: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/{{ crc_latest_release.tag[1:] }}/crc-{{ operating_system }}-{{ arm_or_amd }}.tar.xz"
+- name: Download latest crc
+  ansible.builtin.unarchive:
+    src: "{{ crc_url }}"
+    dest: "{{ tech_bin_dir }}"
+    extra_opts:
+    - "--strip-components=1"
+    remote_src: true
+    include:
+      - "crc-{{ operating_system }}-{{ crc_latest_release.tag[1:]}}-{{ arm_or_amd }}/crc"
