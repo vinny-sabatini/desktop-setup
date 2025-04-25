@@ -28,12 +28,14 @@
 
   - name: Add repos
     ansible.builtin.yum_repository:
-      name: "{{ item.name }}"
-      description: "{{ item.name }}"
-      baseurl: "{{ item.baseurl }}"
-      enabled: "{{ item.enabled }}"
-      gpgkey: "{{ item.gpgkey }}"
+      name: "{{ yum_repo.name }}"
+      description: "{{ yum_repo.name }}"
+      baseurl: "{{ yum_repo.baseurl }}"
+      enabled: "{{ yum_repo.enabled }}"
+      gpgkey: "{{ yum_repo.gpgkey }}"
     with_items: "{{ yum_repos }}"
+    loop_control:
+      loop_var: yum_repo
     become: true
 
   - name: Install RPMs

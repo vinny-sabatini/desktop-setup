@@ -17,11 +17,15 @@
 
     - name: Install pip requirements
       ansible.builtin.pip:
-        name: "{{ item }}"
+        name: "{{ pip_module }}"
       with_items:
         - github3.py
         - virtualenv
+      loop_control:
+        loop_var: pip_module
 
-    - ansible.builtin.include_tasks: "{{ item }}"
+    - ansible.builtin.include_tasks: "{{ ansible_tasks }}"
       with_fileglob:
         - tasks/*
+      loop_control:
+        loop_var: ansible_tasks

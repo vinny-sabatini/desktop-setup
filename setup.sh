@@ -18,13 +18,6 @@ else
   exit 1
 fi
 
-# Install CRC
-wget https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.31.0/crc-linux-amd64.tar.xz
-tar -xf crc-linux-amd64.tar.xz
-chmod +x $(find -name "crc")
-mv $(find -name "crc") $TECH_DIR/bin
-rm -rf crc*
-
 # Install krew
 (
   set -x; cd "$(mktemp -d)" &&

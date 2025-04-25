@@ -1,7 +1,21 @@
 ---
+- name: Get kustomize releases
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/kubernetes-sigs/kustomize/releases
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: kustomize_releases
+- name: Get latest kustomize release
+  ansible.builtin.set_fact:
+    kustomize_version: "{{ release_data.name.split('/')[1] }}"
+  loop: "{{ kustomize_releases.json }}"
+  loop_control:
+    break_when: release_data.name is match('^kustomize.*')
+    loop_var: release_data
 - ansible.builtin.set_fact:
-    # TODO: Dynamically get kustomize version
-    kustomize_url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.6.0/kustomize_v5.6.0_{{ operating_system }}_{{ arm_or_amd }}.tar.gz"
+    kustomize_url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F{{ kustomize_version }}/kustomize_{{ kustomize_version }}_{{ operating_system }}_{{ arm_or_amd }}.tar.gz"
 - name: Download latest kustomize
   ansible.builtin.unarchive:
     src: "{{ kustomize_url }}"
