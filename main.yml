@@ -13,7 +13,7 @@
       when: ansible_facts['architecture'] == 'x86_64'
     - ansible.builtin.set_fact:
         arm_or_amd: "arm64"
-      when: ansible_facts['architecture'] == 'aarch64'
+      when: ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'arm64'
 
     - name: Install pip requirements
       ansible.builtin.pip:

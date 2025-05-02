@@ -1,10 +1,13 @@
 ---
-- ansible.builtin.set_fact:
-    oc_url: "https://mirror.openshift.com/pub/openshift-v4/{{ ansible_facts['architecture'] }}/clients/ocp/latest/openshift-client-{{ operating_system }}.tar.gz"
-- name: Download latest oc
-  ansible.builtin.unarchive:
-    src: "{{ oc_url }}"
-    dest: "{{ tech_bin_dir }}"
-    remote_src: true
-    include:
-      - oc
+- name: "Install oc"
+  when: ansible_facts['os_family'] == 'RedHat'
+  block:
+  - ansible.builtin.set_fact:
+      oc_url: "https://mirror.openshift.com/pub/openshift-v4/{{ ansible_facts['architecture'] }}/clients/ocp/latest/openshift-client-{{ operating_system }}.tar.gz"
+  - name: Download latest oc
+    ansible.builtin.unarchive:
+      src: "{{ oc_url }}"
+      dest: "{{ tech_bin_dir }}"
+      remote_src: true
+      include:
+        - oc
