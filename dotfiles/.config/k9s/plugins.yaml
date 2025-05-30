@@ -1,0 +1,15 @@
+plugins:
+  crd:
+    shortCut: Shift-E
+    description: Explore
+    scopes:
+    - crd
+    command: kubectl
+    background: false
+    args:
+    - explore
+    - -n
+    - $NAMESPACE
+    - --context
+    - $CONTEXT
+    - --request-timeout=1m

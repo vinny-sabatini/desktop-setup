@@ -31,13 +31,27 @@ fi
 )
 
 # Install krew kubectl plugins
-kubectl krew install ctx ns access-matrix foreach gke-policy konfig neat oidc-login sick-pods sniff view-secret whoami
+kubectl krew install \
+  access-matrix \
+  ctx \
+  explore \
+  foreach \
+  gke-policy \
+  konfig \
+  neat \
+  ns \
+  oidc-login \
+  sick-pods \
+  sniff \
+  view-secret \
+  whoami
 
 # Setup oh-my-zsh
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Add dotfiles
+mkdir -p $HOME/.config/k9s
 cp -r ./dotfiles/. $HOME
 
 # Fix kind "too many open files" issue
@@ -47,6 +61,12 @@ cp -r ./dotfiles/. $HOME
 # fs.inotify.max_user_instances = 512
 # EOF
 
+# TODO: Install Crane
+# VERSION=$(curl -s "https://api.github.com/repos/google/go-containerregistry/releases/latest" | jq -r '.tag_name')
+# OS=Linux
+# ARCH=x86_64
+# curl -sL "https://github.com/google/go-containerregistry/releases/download/${VERSION}/go-containerregistry_${OS}_${ARCH}.tar.gz" > go-containerregistry.tar.gz
+# tar -zxvf go-containerregistry.tar.gz -C ~/tech/bin/ crane
 
 if ! hash ansible >/dev/null 2>&1; then
     echo "You must install ansible before running this"

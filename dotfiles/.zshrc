@@ -156,6 +156,7 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../../..'
 alias docker=podman
 alias k=kubectl
+alias t=talosctl
 alias o=oc
 alias krew="kubectl krew"
 alias netshoot="kubectl run netshoot --image=nicolaka/netshoot -i --tty --rm"
