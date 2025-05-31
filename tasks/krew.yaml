@@ -2,7 +2,7 @@
 - name: Download latest Krew
   ansible.builtin.unarchive:
     src: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ operating_system }}_{{ arm_or_amd }}.tar.gz
-    dest: "$HOME/.krew/bin"
+    dest: "{{ ansible_facts.user_dir }}/.krew/bin"
     remote_src: true
     include:
       - "./krew-{{ operating_system }}_{{ arm_or_amd }}"
