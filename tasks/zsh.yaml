@@ -1,0 +1,40 @@
+---
+- name: See if oh-my-zsh exists
+  ansible.builtin.stat:
+    path: "{{ ansible_facts.user_dir }}/.oh-my-zsh"
+  register: oh_my_zsh_stat
+
+- name: Install oh-my-zsh if not already installed
+  when: not oh_my_zsh_stat.stat.exists
+  block:
+    - name: Download ohmyzsh
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: "{{ ansible_facts.user_dir }}/install.sh"
+        mode: '0755'
+    - name: Install ohmyzsh
+      ansible.builtin.script:
+        cmd: "{{ ansible_facts.user_dir }}/install.sh"
+    - name: Delete ohmyzsh script
+      ansible.builtin.file:
+        path: "{{ ansible_facts.user_dir }}/install.sh"
+        state: absent
+
+- name: See if powerlevel10k exists
+  ansible.builtin.stat:
+    path: "{{ ansible_facts.user_dir }}/.oh-my-zsh/custom/themes/powerlevel10k"
+  register: powerlevel10k_stat
+
+- name: Install oh-my-zsh if not already installed
+  when: not powerlevel10k_stat.stat.exists
+  block:
+    - name: Install PowerLevel10K
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ ansible_facts.user_dir }}/.oh-my-zsh/custom/themes/powerlevel10k"
+        depth: 1
+
+- name: Copy dotfiles
+  ansible.builtin.copy:
+    src: files/oh-my-zsh/completion
+    dest: "{{ ansible_facts.user_dir }}/.oh-my-zsh"

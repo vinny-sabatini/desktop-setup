@@ -44,9 +44,8 @@
         - code
         - discord
         - fzf
-        - jq
-        - golang
         - gh
+        - golang
         - google-chrome-stable
         - google-cloud-cli
         - jq

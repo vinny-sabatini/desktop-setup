@@ -1,0 +1,31 @@
+---
+- name: Download latest Krew
+  ansible.builtin.unarchive:
+    src: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ operating_system }}_{{ arm_or_amd }}.tar.gz
+    dest: "$HOME/.krew/bin"
+    remote_src: true
+    include:
+      - "./krew-{{ operating_system }}_{{ arm_or_amd }}"
+    list_files: true
+
+- ansible.builtin.set_fact:
+    krew_plugins:
+      - access-matrix
+      - ctx
+      - explore
+      - foreach
+      - gke-policy
+      - konfig
+      - neat
+      - ns
+      - oidc-login
+      - sick-pods
+      - sniff
+      - view-secret
+      - whoami
+
+- name: Install Krew plugins
+  shell: "kubectl krew install {{ krew_plugins | join(' ') }}"
+
+- name: Upgrade Krew plugins
+  shell: kubectl krew upgrade

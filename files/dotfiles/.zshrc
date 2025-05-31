@@ -169,11 +169,8 @@ local paths=(
     #$GOROOT/bin
     $GOPATH/bin
     $HOME/.vim/bin
-    $BIN_DIR
-    $TECH_DIR/usr/local/bin
     $HOME/.krew/bin
     $BIN_DIR
-    $HOME/.vim/bin
 )
 
 for DIR in $paths; do

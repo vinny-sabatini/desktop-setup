@@ -7,6 +7,7 @@
   tasks:
     - ansible.builtin.set_fact:
         tech_bin_dir: "$HOME/tech/bin"
+        project_dir: "$HOME/projects"
         operating_system: "{{ ansible_facts['system'] | lower }}"
     - ansible.builtin.set_fact:
         arm_or_amd: "amd64"
@@ -23,6 +24,33 @@
         - virtualenv
       loop_control:
         loop_var: pip_module
+
+    - name: Setup directories
+      ansible.builtin.file:
+        path: "{{ directories }}"
+        state: directory
+        mode: '0755'
+      with_items:
+        - "{{ tech_bin_dir }}"
+        - "{{ project_dir }}"
+        - "$HOME/.config/k9s"
+        - "$HOME/.krew/bin"
+      loop_control:
+        loop_var: directories
+
+    - name: Copy dotfiles
+      ansible.builtin.copy:
+        src: "{{ copy_files.source }}"
+        dest: "{{ copy_files.destination }}"
+      with_items:
+        - source: files/dotfiles/.zshrc
+          destination: $HOME/.zshrc
+        - source: files/dotfiles/.p10k.zsh
+          destination: $HOME/.p10k.zsh
+        - source: files/dotfiles/.config/k9s/plugins.yaml
+          destination: $HOME/.config/k9s/plugins.yaml
+      loop_control:
+        loop_var: copy_files
 
     - ansible.builtin.include_tasks: "{{ ansible_tasks }}"
       with_fileglob:

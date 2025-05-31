@@ -6,3 +6,16 @@
     url: "{{ kind_url }}"
     dest: "{{ tech_bin_dir }}/kind"
     mode: '0755'
+
+# https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files
+- name: "Fix kind too many open files issue"
+  when: ansible_facts['os_family'] == 'RedHat'
+  block:
+  - ansible.posix.sysctl:
+      name: fs.inotify.max_user_watches
+      value: '524288'
+      state: present
+  - ansible.posix.sysctl:
+      name: fs.inotify.max_user_instances
+      value: '512'
+      state: present

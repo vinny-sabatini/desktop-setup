@@ -1,0 +1,28 @@
+---
+# TODO: Install Crane
+# VERSION=$(curl -s "https://api.github.com/repos/google/go-containerregistry/releases/latest" | jq -r '.tag_name')
+# OS=Linux
+# ARCH=x86_64
+# curl -sL "https://github.com/google/go-containerregistry/releases/download/${VERSION}/go-containerregistry_${OS}_${ARCH}.tar.gz" > go-containerregistry.tar.gz
+# tar -zxvf go-containerregistry.tar.gz -C ~/tech/bin/ crane
+
+- name: Get crane releases
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/google/go-containerregistry/releases/latest
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: crane_release
+- name: Get latest crane release
+  ansible.builtin.set_fact:
+    crane_version: "{{ crane_release.json.tag_name }}"
+- ansible.builtin.set_fact:
+    crane_url: "https://github.com/google/go-containerregistry/releases/download/{{ crane_version }}/go-containerregistry_{{ operating_system }}_{{ ansible_facts['architecture'] }}.tar.gz"
+- name: Download latest crane
+  ansible.builtin.unarchive:
+    src: "{{ crane_url }}"
+    dest: "{{ tech_bin_dir }}"
+    remote_src: true
+    include:
+      - crane

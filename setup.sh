@@ -2,14 +2,6 @@
 
 set -euo pipefail
 
-# Setup directories
-TECH_DIR=$HOME/tech
-PROJ_DIR=$HOME/projects
-mkdir -p $TECH_DIR/bin
-mkdir -p $PROJ_DIR
-
-PATH=$PATH:$TECH_DIR/bin:$HOME/.krew/bin
-
 # Check OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   echo "Setting up linux machine"
@@ -17,56 +9,6 @@ else
   echo "Did not setup that OS yet"
   exit 1
 fi
-
-# Install krew
-(
-  set -x; cd "$(mktemp -d)" &&
-  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-  KREW="krew-${OS}_${ARCH}" &&
-  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
-  tar zxvf "${KREW}.tar.gz" &&
-  ./"${KREW}" install krew
-  kubectl krew upgrade
-)
-
-# Install krew kubectl plugins
-kubectl krew install \
-  access-matrix \
-  ctx \
-  explore \
-  foreach \
-  gke-policy \
-  konfig \
-  neat \
-  ns \
-  oidc-login \
-  sick-pods \
-  sniff \
-  view-secret \
-  whoami
-
-# Setup oh-my-zsh
-# sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-# Add dotfiles
-mkdir -p $HOME/.config/k9s
-cp -r ./dotfiles/. $HOME
-
-# Fix kind "too many open files" issue
-# https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files
-# sudo cat << EOF >> /etc/sysctl.conf
-# fs.inotify.max_user_watches = 524288
-# fs.inotify.max_user_instances = 512
-# EOF
-
-# TODO: Install Crane
-# VERSION=$(curl -s "https://api.github.com/repos/google/go-containerregistry/releases/latest" | jq -r '.tag_name')
-# OS=Linux
-# ARCH=x86_64
-# curl -sL "https://github.com/google/go-containerregistry/releases/download/${VERSION}/go-containerregistry_${OS}_${ARCH}.tar.gz" > go-containerregistry.tar.gz
-# tar -zxvf go-containerregistry.tar.gz -C ~/tech/bin/ crane
 
 if ! hash ansible >/dev/null 2>&1; then
     echo "You must install ansible before running this"
