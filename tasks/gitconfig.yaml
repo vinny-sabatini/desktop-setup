@@ -1,0 +1,35 @@
+---
+- ansible.builtin.set_fact:
+    git_config_settings:
+      - name: color.ui
+        value: "true"
+      - name: core.editor
+        value: vim
+      - name: core.excludesFile
+        value: ~/.gitignore
+      - name: merge.tool
+        value: vimdiff
+      - name: alias.br
+        value: branch
+      - name: alias.ci
+        value: commit --verbose
+      - name: alias.co
+        value: checkout
+      - name: alias.lol
+        value: log --graph --all --decorate --oneline
+      - name: alias.rb
+        value: rebase
+      - name: alias.st
+        value: status
+      - name: pull.rebase
+        value: "false"
+      - name: push.default
+        value: nothing
+
+- community.general.git_config:
+    name: "{{ git_config_setting.name }}"
+    scope: global
+    value: "{{ git_config_setting.value }}"
+  loop: "{{ git_config_settings }}"
+  loop_control:
+    loop_var: git_config_setting

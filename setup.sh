@@ -5,6 +5,10 @@ set -euo pipefail
 # Check OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   echo "Setting up linux machine"
+  ANSIBLE_EXTRA_ARGS="--ask-become-pass"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Setting up mac machine"
+  ANSIBLE_EXTRA_ARGS=""
 else
   echo "Did not setup that OS yet"
   exit 1
@@ -17,4 +21,4 @@ fi
 
 ansible-galaxy collection install community.general
 
-ansible-playbook main.yml -K -i hosts
+ansible-playbook main.yml -i hosts $ANSIBLE_EXTRA_ARGS

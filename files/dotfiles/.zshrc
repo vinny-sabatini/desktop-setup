@@ -170,6 +170,7 @@ local paths=(
     $GOPATH/bin
     $HOME/.vim/bin
     $HOME/.krew/bin
+    /opt/homebrew/bin
     $BIN_DIR
 )
 

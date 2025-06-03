@@ -1,0 +1,38 @@
+---
+- name: "Setup homebrew"
+  when: ansible_facts['os_family'] == 'Darwin'
+  block:
+  - name: See if homebrew exists
+    ansible.builtin.stat:
+      path: "/opt/homebrew"
+    register: homebrew_stat
+
+  - name: Install homebrew if not already installed
+    when: not homebrew_stat.stat.exists
+    block:
+      - name: Download homebrew install script
+        ansible.builtin.get_url:
+          url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+          dest: "{{ ansible_facts.user_dir }}/install.sh"
+          mode: '0755'
+      - name: Install homebrew
+        ansible.builtin.script:
+          cmd: "{{ ansible_facts.user_dir }}/install.sh"
+      - name: Delete homebrew install script
+        ansible.builtin.file:
+          path: "{{ ansible_facts.user_dir }}/install.sh"
+          state: absent
+
+# TODO: Install brew packages
+  # - name: Install homebrew formulas
+  #   community.general.homebrew:
+  #     name: foo
+  #     state: present
+  # - name: Install formulas from casks
+  #   community.general.homebrew:
+  #     name: homebrew/cask/foo
+  #     state: present
+  # - name: Update homebrew and upgrade all packages
+  #   community.general.homebrew:
+  #     update_homebrew: true
+  #     upgrade_all: true
