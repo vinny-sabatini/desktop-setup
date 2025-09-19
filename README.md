@@ -13,4 +13,5 @@ This assumes you are using Fedora
 ## Future additions
 
 - Add more customizations for desktop (ex. KDE configuration)
+- Install and configure Ghostty
 - Authentication to GitHub to avoid rate limiting
