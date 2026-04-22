@@ -133,7 +133,6 @@ export HOSTNAME=$(hostname -s)     # Short hostname of this computer
 export GOPATH=$PROJ_DIR/go
 #export GOROOT=$TECH_DIR/go
 export KIND_EXPERIMENTAL_PROVIDER=podman
-export KIND_INGRESS_CONFIG=$HOME/.config/kind-ingress.yaml
 
 # Generic Aliases
 alias cat='bat'
