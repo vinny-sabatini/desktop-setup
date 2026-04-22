@@ -1,4 +1,10 @@
 ---
+- name: Install zsh
+  ansible.builtin.dnf:
+    name: zsh
+    state: latest
+  become: true
+
 - name: See if oh-my-zsh exists
   ansible.builtin.stat:
     path: "{{ ansible_facts.user_dir }}/.oh-my-zsh"

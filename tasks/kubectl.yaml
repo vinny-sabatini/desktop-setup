@@ -18,3 +18,41 @@
         url: "{{ kubectl_url }}"
         dest: "{{ tech_bin_dir }}/kubectl"
         mode: '0755'
+
+- name: Check if krew is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/krew"
+  register: krew_bin
+- name: "Install krew"
+  when: skip_installed == "n" or (not krew_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Download latest Krew
+      ansible.builtin.unarchive:
+        src: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ operating_system }}_{{ arm_or_amd }}.tar.gz
+        dest: "{{ ansible_facts.user_dir }}/.krew/bin"
+        remote_src: true
+        include:
+          - "./krew-{{ operating_system }}_{{ arm_or_amd }}"
+        list_files: true
+
+- ansible.builtin.set_fact:
+    krew_plugins:
+      - access-matrix
+      - ctx
+      - explore
+      - foreach
+      - gke-policy
+      - konfig
+      - neat
+      - ns
+      - oidc-login
+      - sick-pods
+      - sniff
+      - view-secret
+      - whoami
+
+- name: Install Krew plugins
+  shell: "kubectl krew install {{ krew_plugins | join(' ') }}"
+
+- name: Upgrade Krew plugins
+  shell: kubectl krew upgrade
