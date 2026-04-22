@@ -1,11 +1,18 @@
 ---
-- ansible.builtin.set_fact:
-    kind_url: https://kind.sigs.k8s.io/dl/latest/kind-{{ operating_system }}-{{ arm_or_amd }}
-- name: Download Kind
-  ansible.builtin.get_url:
-    url: "{{ kind_url }}"
-    dest: "{{ tech_bin_dir }}/kind"
-    mode: '0755'
+- name: Check if kind is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/kind"
+  register: kind_bin
+- name: "Install kind"
+  when: skip_installed == "n" or (not kind_bin.stat.exists and skip_installed == "y")
+  block:
+    - ansible.builtin.set_fact:
+        kind_url: https://kind.sigs.k8s.io/dl/latest/kind-{{ operating_system }}-{{ arm_or_amd }}
+    - name: Download Kind
+      ansible.builtin.get_url:
+        url: "{{ kind_url }}"
+        dest: "{{ tech_bin_dir }}/kind"
+        mode: '0755'
 
 # https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files
 - name: "Fix kind too many open files issue"

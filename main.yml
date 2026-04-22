@@ -3,6 +3,10 @@
   hosts: localhost
   connection: local
   gather_facts: true
+  vars_prompt:
+    - name: skip_installed
+      prompt: skip installed binaries? (y/n)
+      private: false
 
   tasks:
     - ansible.builtin.set_fact:

@@ -1,6 +1,10 @@
 ---
 - ansible.builtin.set_fact:
     git_config_settings:
+      - name: user.name
+        value: "Vinny Sabatini"
+      - name: user.email
+        value: "vincent.sabatini@gmail.com"
       - name: color.ui
         value: "true"
       - name: core.editor

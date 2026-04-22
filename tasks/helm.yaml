@@ -1,18 +1,25 @@
 ---
-- name: Get latest release of helm
-  community.general.github_release:
-    user: helm
-    repo: helm
-    action: latest_release
-  register: helm_latest_release
-- ansible.builtin.set_fact:
-    helm_url: "https://get.helm.sh/helm-{{ helm_latest_release.tag }}-{{ operating_system }}-{{ arm_or_amd }}.tar.gz"
-- name: Download latest helm
-  ansible.builtin.unarchive:
-    src: "{{ helm_url }}"
-    dest: "{{ tech_bin_dir }}"
-    extra_opts:
-    - "--strip-components=1"
-    remote_src: true
-    include:
-      - "{{ operating_system }}-{{ arm_or_amd }}/helm"
+- name: Check if Helm is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/helm"
+  register: helm_bin
+- name: "Install Helm"
+  when: skip_installed == "n" or (not helm_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of helm
+      community.general.github_release:
+        user: helm
+        repo: helm
+        action: latest_release
+      register: helm_latest_release
+    - ansible.builtin.set_fact:
+        helm_url: "https://get.helm.sh/helm-{{ helm_latest_release.tag }}-{{ operating_system }}-{{ arm_or_amd }}.tar.gz"
+    - name: Download latest helm
+      ansible.builtin.unarchive:
+        src: "{{ helm_url }}"
+        dest: "{{ tech_bin_dir }}"
+        extra_opts:
+        - "--strip-components=1"
+        remote_src: true
+        include:
+          - "{{ operating_system }}-{{ arm_or_amd }}/helm"

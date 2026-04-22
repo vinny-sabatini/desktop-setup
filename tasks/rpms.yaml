@@ -12,15 +12,6 @@
           baseurl: "https://dl.google.com/linux/chrome/rpm/stable/{{ ansible_facts['architecture'] }}"
           enabled: true
           gpgkey: https://dl.google.com/linux/linux_signing_key.pub
-        - name: google-cloud-cli
-          baseurl: "https://packages.cloud.google.com/yum/repos/cloud-sdk-el9-{{ ansible_facts['architecture'] }}"
-          enabled: true
-          gpgkey: https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-        - name: hashicorp-stable
-          # baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
-          baseurl: https://rpm.releases.hashicorp.com/fedora/41/$basearch/stable
-          enabled: true
-          gpgkey: https://rpm.releases.hashicorp.com/gpg
         - name: visual-studio-code
           baseurl: https://packages.microsoft.com/yumrepos/vscode
           enabled: true
@@ -42,20 +33,15 @@
     ansible.builtin.dnf:
       name:
         - code
-        - discord
         - fzf
         - gh
         - golang
         - google-chrome-stable
-        - google-cloud-cli
         - jq
-        - packer
         - podman
         - python3
         - python3-pip
-        - terraform
         - the_silver_searcher
-        - vault
         - vim
         - zsh
       state: latest
