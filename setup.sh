@@ -19,6 +19,16 @@ if ! hash ansible >/dev/null 2>&1; then
     exit 1
 fi
 
+if ! hash git >/dev/null 2>&1; then
+    echo "You must install git before running this"
+    exit 1
+fi
+
+if ! hash pip >/dev/null 2>&1; then
+    echo "You must install pip before running this"
+    exit 1
+fi
+
 ansible-galaxy collection install community.general
 
 ansible-playbook main.yml -i hosts $ANSIBLE_EXTRA_ARGS
