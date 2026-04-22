@@ -19,9 +19,19 @@
         dest: "{{ tech_bin_dir }}/kubectl"
         mode: '0755'
 
+# https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+# (
+#   set -x; cd "$(mktemp -d)" &&
+#   OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+#   ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+#   KREW="krew-${OS}_${ARCH}" &&
+#   curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+#   tar zxvf "${KREW}.tar.gz" &&
+#   ./"${KREW}" install krew
+# )
 - name: Check if krew is installed
   ansible.builtin.stat:
-    path: "{{ tech_bin_dir }}/krew"
+    path: "{{ ansible_facts.user_dir }}/.krew/bin/kubectl-krew"
   register: krew_bin
 - name: "Install krew"
   when: skip_installed == "n" or (not krew_bin.stat.exists and skip_installed == "y")
@@ -29,12 +39,17 @@
     - name: Download latest Krew
       ansible.builtin.unarchive:
         src: https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-{{ operating_system }}_{{ arm_or_amd }}.tar.gz
-        dest: "{{ ansible_facts.user_dir }}/.krew/bin"
+        dest: "{{ tech_bin_dir }}"
         remote_src: true
         include:
           - "./krew-{{ operating_system }}_{{ arm_or_amd }}"
         list_files: true
-
+    - name: Install krew
+      ansible.builtin.shell: "{{ tech_bin_dir }}/krew-{{ operating_system }}_{{ arm_or_amd }} install krew"
+    - name: Remove krew binary
+      ansible.builtin.file:
+        state: absent
+        path: "{{ tech_bin_dir }}/krew-{{ operating_system }}_{{ arm_or_amd }}"
 - ansible.builtin.set_fact:
     krew_plugins:
       - access-matrix
