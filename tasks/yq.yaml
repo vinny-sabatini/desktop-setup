@@ -1,14 +1,21 @@
 ---
-- name: Get latest release of yq
-  community.general.github_release:
-    user: mikefarah
-    repo: yq
-    action: latest_release
-  register: yq_latest_release
-- ansible.builtin.set_fact:
-    yq_url: https://github.com/mikefarah/yq/releases/download/{{ yq_latest_release.tag }}/yq_{{ operating_system }}_{{ arm_or_amd }}
-- name: Download yq
-  ansible.builtin.get_url:
-    url: "{{ yq_url }}"
-    dest: "{{ tech_bin_dir }}/yq"
-    mode: '0755'
+- name: Check if yq is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/yq"
+  register: yq_bin
+- name: "Install yq"
+  when: skip_installed == "n" or (not yq_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of yq
+      community.general.github_release:
+        user: mikefarah
+        repo: yq
+        action: latest_release
+      register: yq_latest_release
+    - ansible.builtin.set_fact:
+        yq_url: https://github.com/mikefarah/yq/releases/download/{{ yq_latest_release.tag }}/yq_{{ operating_system }}_{{ arm_or_amd }}
+    - name: Download yq
+      ansible.builtin.get_url:
+        url: "{{ yq_url }}"
+        dest: "{{ tech_bin_dir }}/yq"
+        mode: '0755'

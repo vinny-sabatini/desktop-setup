@@ -1,16 +1,23 @@
 ---
-- name: Get latest release of k9s
-  community.general.github_release:
-    user: derailed
-    repo: k9s
-    action: latest_release
-  register: k9s_latest_release
-- ansible.builtin.set_fact:
-    k9s_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_{{ operating_system | capitalize }}_{{ arm_or_amd }}.tar.gz"
-- name: Download latest k9s
-  ansible.builtin.unarchive:
-    src: "{{ k9s_url }}"
-    dest: "{{ tech_bin_dir }}"
-    remote_src: true
-    include:
-      - k9s
+- name: Check if k9s is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/k9s"
+  register: k9s_bin
+- name: "Install k9s"
+  when: skip_installed == "n" or (not k9s_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of k9s
+      community.general.github_release:
+        user: derailed
+        repo: k9s
+        action: latest_release
+      register: k9s_latest_release
+    - ansible.builtin.set_fact:
+        k9s_url: "https://github.com/derailed/k9s/releases/download/{{ k9s_latest_release.tag }}/k9s_{{ operating_system | capitalize }}_{{ arm_or_amd }}.tar.gz"
+    - name: Download latest k9s
+      ansible.builtin.unarchive:
+        src: "{{ k9s_url }}"
+        dest: "{{ tech_bin_dir }}"
+        remote_src: true
+        include:
+          - k9s

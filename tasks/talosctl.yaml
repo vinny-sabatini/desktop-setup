@@ -1,14 +1,21 @@
 ---
-- name: Get latest release of talos
-  community.general.github_release:
-    user: siderolabs
-    repo: talos
-    action: latest_release
-  register: talos_latest_release
-- ansible.builtin.set_fact:
-    talosctl_url: https://github.com/siderolabs/talos/releases/download/{{ talos_latest_release.tag }}/talosctl-{{ operating_system }}-{{ arm_or_amd }}
-- name: Download talosctl
-  ansible.builtin.get_url:
-    url: "{{ talosctl_url }}"
-    dest: "{{ tech_bin_dir }}/talosctl"
-    mode: '0755'
+- name: Check if talosctl is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/talosctl"
+  register: talosctl_bin
+- name: "Install talosctl"
+  when: skip_installed == "n" or (not talosctl_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of talos
+      community.general.github_release:
+        user: siderolabs
+        repo: talos
+        action: latest_release
+      register: talos_latest_release
+    - ansible.builtin.set_fact:
+        talosctl_url: https://github.com/siderolabs/talos/releases/download/{{ talos_latest_release.tag }}/talosctl-{{ operating_system }}-{{ arm_or_amd }}
+    - name: Download talosctl
+      ansible.builtin.get_url:
+        url: "{{ talosctl_url }}"
+        dest: "{{ tech_bin_dir }}/talosctl"
+        mode: '0755'

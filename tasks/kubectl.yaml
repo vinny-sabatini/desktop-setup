@@ -1,13 +1,20 @@
 ---
-- name: Check latest kubectl
-  ansible.builtin.uri:
-    url: https://dl.k8s.io/release/stable.txt
-    return_content: true
-  register: kubectl_stable_release
-- ansible.builtin.set_fact:
-    kubectl_url: "https://dl.k8s.io/release/{{ kubectl_stable_release.content }}/bin/{{ operating_system }}/{{ arm_or_amd }}/kubectl"
-- name: Download kubectl
-  ansible.builtin.get_url:
-    url: "{{ kubectl_url }}"
-    dest: "{{ tech_bin_dir }}/kubectl"
-    mode: '0755'
+- name: Check if kubectl is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/kubectl"
+  register: kubectl_bin
+- name: "Install kubectl"
+  when: skip_installed == "n" or (not kubectl_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Check latest kubectl
+      ansible.builtin.uri:
+        url: https://dl.k8s.io/release/stable.txt
+        return_content: true
+      register: kubectl_stable_release
+    - ansible.builtin.set_fact:
+        kubectl_url: "https://dl.k8s.io/release/{{ kubectl_stable_release.content }}/bin/{{ operating_system }}/{{ arm_or_amd }}/kubectl"
+    - name: Download kubectl
+      ansible.builtin.get_url:
+        url: "{{ kubectl_url }}"
+        dest: "{{ tech_bin_dir }}/kubectl"
+        mode: '0755'

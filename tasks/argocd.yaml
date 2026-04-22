@@ -1,14 +1,21 @@
 ---
-- name: Get latest release of argocd
-  community.general.github_release:
-    user: argoproj
-    repo: argo-cd
-    action: latest_release
-  register: argocd_latest_release
-- ansible.builtin.set_fact:
-    argocd_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_latest_release.tag }}/argocd-{{ operating_system }}-{{ arm_or_amd }}
-- name: Download ArgoCD
-  ansible.builtin.get_url:
-    url: "{{ argocd_url }}"
-    dest: "{{ tech_bin_dir }}/argocd"
-    mode: '0755'
+- name: Check if ArgoCD is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/argocd"
+  register: argo_bin
+- name: "Install ArgoCD"
+  when: skip_installed == "n" or (not argo_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of argocd
+      community.general.github_release:
+        user: argoproj
+        repo: argo-cd
+        action: latest_release
+      register: argocd_latest_release
+    - ansible.builtin.set_fact:
+        argocd_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_latest_release.tag }}/argocd-{{ operating_system }}-{{ arm_or_amd }}
+    - name: Download ArgoCD
+      ansible.builtin.get_url:
+        url: "{{ argocd_url }}"
+        dest: "{{ tech_bin_dir }}/argocd"
+        mode: '0755'
