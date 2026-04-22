@@ -214,24 +214,6 @@ if which kubectl > /dev/null 2>&1; then
     alias kubens=kns
 fi
 
-
-### OpenShift Setup ###
-if which oc > /dev/null 2>&1; then
-    source <(oc completion zsh)
-    alias o='oc'
-    complete -F __start_oc o
-fi
-
-# Enable crc autocomplete
-if which crc > /dev/null 2>&1; then
-    source <(crc completion zsh)
-fi
-
-# Enable s2i autocomplete
-if which s2i > /dev/null 2>&1; then
-    source <(s2i completion zsh)
-fi
-
 # Enable gh autocomplete
 if which gh > /dev/null 2>&1; then
     eval "$(gh completion -s zsh)"
@@ -245,11 +227,6 @@ fi
 # Enable ag auto complete
 if [ -f "$BASH_INCLUDE_DIR/ag.bashcomp.sh" ]; then
     #. $BASH_INCLUDE_DIR/ag.bashcomp.sh
-fi
-
-# Enable gcloud complete
-if which gcloud > /dev/null 2>&1; then
-    source /usr/lib64/google-cloud-sdk/completion.zsh.inc
 fi
 
 if which kind > /dev/null 2>&1; then
@@ -269,10 +246,5 @@ if which argocd > /dev/null 2>&1; then
     compdef _argocd argocd
 fi
 
-complete -C $HOME/projects/go/bin/odo odo
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/bin/vault vault
