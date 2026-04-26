@@ -33,6 +33,7 @@
     ansible.builtin.dnf:
       name:
         - code
+        - fastfetch
         - fzf
         - gh
         - golang
