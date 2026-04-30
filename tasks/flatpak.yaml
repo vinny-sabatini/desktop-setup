@@ -11,8 +11,10 @@
     - name: Install from flatpak
       community.general.flatpak:
         name:
+          - com.bambulab.BambuStudio
           - com.bitwarden.desktop
           - com.discordapp.Discord
+          - com.spotify.Client
           - com.usebruno.Bruno
           - com.valvesoftware.Steam
           - org.gimp.GIMP
