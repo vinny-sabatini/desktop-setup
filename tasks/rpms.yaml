@@ -7,7 +7,7 @@
         - name: gh-cli
           baseurl: https://cli.github.com/packages/rpm
           enabled: true
-          gpgkey: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x23F3D4EA75716059
+          gpgkey: https://cli.github.com/packages/githubcli-archive-keyring.asc
         - name: google-chrome
           baseurl: "https://dl.google.com/linux/chrome/rpm/stable/{{ ansible_facts['architecture'] }}"
           enabled: true
