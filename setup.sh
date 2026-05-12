@@ -29,6 +29,14 @@ if ! hash pip >/dev/null 2>&1; then
     exit 1
 fi
 
+# Ansible does not handle
+# https://github.com/ansible/ansible/issues/80883
+echo "=== WARNING ==="
+echo "Ansible does not handle fingerprint sudo well."
+echo "Consider disabling with 'authselect disable-feature with-fingerprint'"
+echo "And then enabling with 'authselect enable-feature with-fingerprint'"
+echo "Or spam your fingerprint during become tasks"
+
 ansible-galaxy collection install community.general
 
 ansible-playbook main.yml -i hosts $ANSIBLE_EXTRA_ARGS
