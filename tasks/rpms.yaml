@@ -33,6 +33,7 @@
     ansible.builtin.dnf:
       name:
         - code
+        - dnf-automatic
         - fastfetch
         - fzf
         - gh
@@ -47,4 +48,31 @@
         - vim
         - zsh
       state: latest
+    become: true
+
+  - name: Upgrade all packages
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
+    become: true
+
+  - name: Autoremove unneeded packages installed as dependencies
+    ansible.builtin.dnf:
+      autoremove: yes
+    become: true
+
+  - name: Setup dnf automatic conf
+    ansible.builtin.copy:
+      src: files/dnf/automatic.conf
+      dest: /etc/dnf/automatic.conf
+      owner: root
+      group: root
+      mode: '0644'
+    become: true
+
+  - name: Enable dnf-automatic timer
+    ansible.builtin.systemd_service:
+      name: dnf-automatic.timer
+      state: started
+      enabled: true
     become: true
