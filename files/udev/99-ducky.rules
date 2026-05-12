@@ -1,0 +1,6 @@
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0016"   MODE="0666"
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0017"   MODE="0666"
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0018"   MODE="0666"
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0019"   MODE="0666"
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0020"   MODE="0666"
+SUBSYSTEM=="hidraw"   ATTRS{idVendor}=="3233"   ATTRS{idProduct}=="0021"   MODE="0666"
