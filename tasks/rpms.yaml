@@ -16,6 +16,10 @@
           baseurl: https://packages.microsoft.com/yumrepos/vscode
           enabled: true
           gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+        - name: brave-browser
+          baseurl: https://brave-browser-rpm-release.s3.brave.com/$basearch
+          enabled: true
+          gpgkey: https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 
   - name: Add repos
     ansible.builtin.yum_repository:
@@ -32,6 +36,7 @@
   - name: Install RPMs
     ansible.builtin.dnf:
       name:
+        - brave-browser
         - code
         - dnf-automatic
         - fastfetch
