@@ -36,7 +36,7 @@
   - name: Install RPMs
     ansible.builtin.dnf:
       name:
-        - brave-browser
+        - brave-origin
         - code
         - dnf-automatic
         - fastfetch
