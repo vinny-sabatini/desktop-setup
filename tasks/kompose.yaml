@@ -1,0 +1,21 @@
+---
+- name: Check if kompose is installed
+  ansible.builtin.stat:
+    path: "{{ tech_bin_dir }}/kompose"
+  register: kompose_bin
+- name: "Install kompose"
+  when: skip_installed == "n" or (not kompose_bin.stat.exists and skip_installed == "y")
+  block:
+    - name: Get latest release of kompose
+      community.general.github_release:
+        user: kubernetes
+        repo: kompose
+        action: latest_release
+      register: kompose_latest_release
+    - ansible.builtin.set_fact:
+        kompose_url: "https://github.com/kubernetes/kompose/releases/download/{{ kompose_latest_release.tag }}/kompose-{{ operating_system }}-{{ arm_or_amd }}"
+    - name: Download latest kompose
+      ansible.builtin.get_url:
+        url: "{{ kompose_url }}"
+        dest: "{{ tech_bin_dir }}/kompose"
+        mode: '0755'
