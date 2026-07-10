@@ -8,10 +8,6 @@
           baseurl: https://cli.github.com/packages/rpm
           enabled: true
           gpgkey: https://cli.github.com/packages/githubcli-archive-keyring.asc
-        - name: google-chrome
-          baseurl: "https://dl.google.com/linux/chrome/rpm/stable/{{ ansible_facts['architecture'] }}"
-          enabled: true
-          gpgkey: https://dl.google.com/linux/linux_signing_key.pub
         - name: visual-studio-code
           baseurl: https://packages.microsoft.com/yumrepos/vscode
           enabled: true
@@ -43,7 +39,6 @@
         - fzf
         - gh
         - golang
-        - google-chrome-stable
         - jq
         - podman
         - python3
