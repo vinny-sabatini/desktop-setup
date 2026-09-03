@@ -11,6 +11,7 @@
     - name: Install from flatpak
       community.general.flatpak:
         name:
+          - au.stevetech.yafi
           - com.adamcake.Bolt
           - com.bambulab.BambuStudio
           - com.bitwarden.desktop
