@@ -53,10 +53,11 @@
 - ansible.builtin.set_fact:
     krew_plugins:
       - access-matrix
+      - crd-wizard
       - ctx
       - explore
       - foreach
-      - gke-policy
+      - get-all
       - konfig
       - neat
       - ns
